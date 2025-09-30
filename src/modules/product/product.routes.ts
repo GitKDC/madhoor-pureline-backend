@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { protect, isAdmin } from '../../middlewares/auth';
+import { isAdmin, protect } from '../../middleware/auth';
 import { 
     getProducts, 
     getOneProduct, 
@@ -8,18 +8,18 @@ import {
     deleteProduct 
 } from './product.controller';
 
-const router = Router();
+const productRoutes = Router();
 
 // --- Public Routes ---
 // Anyone can view products
-router.get('/', getProducts);
-router.get('/:id', getOneProduct);
+productRoutes.get('/', getProducts);
+productRoutes.get('/:id', getOneProduct);
 
 
 // --- Admin Routes ---
 // Only logged-in admins can create, update, or delete products
-router.post('/', protect, isAdmin, createProduct);
-router.put('/:id', protect, isAdmin, updateProduct);
-router.delete('/:id', protect, isAdmin, deleteProduct);
+productRoutes.post('/', protect, isAdmin, createProduct);
+productRoutes.put('/:id', protect, isAdmin, updateProduct);
+productRoutes.delete('/:id', protect, isAdmin, deleteProduct);
 
-export default router;
+export default productRoutes;

@@ -18,6 +18,12 @@ export const getProducts = async (req: Request, res: Response) => {
 // GET /api/products/:id
 export const getOneProduct = async (req: Request, res: Response) => {
   const { id } = req.params;
+
+  if (!id) {
+    return res.status(400).json({ message: 'Product ID is required in URL' });
+  }
+
+
   try {
     const product = await prisma.product.findUnique({
       where: { id },
@@ -66,15 +72,27 @@ export const updateProduct = async (req: Request, res: Response) => {
   const { id } = req.params;
   const { name, description, price, imageUrl } = req.body;
 
+  if (!id) {
+    return res.status(400).json({ message: 'Product ID is required in URL' });
+  }
+
+   const updateData: {
+    name?: string;
+    description?: string;
+    price?: number;
+    imageUrl?: string;
+  } = {};
+
+  if (name !== undefined) updateData.name = name;
+  if (description !== undefined) updateData.description = description;
+  if (price !== undefined) updateData.price = parseFloat(price);
+  if (imageUrl !== undefined) updateData.imageUrl = imageUrl;
+
+
   try {
     const updatedProduct = await prisma.product.update({
       where: { id },
-      data: {
-        name,
-        description,
-        price: price !== undefined ? parseFloat(price) : undefined,
-        imageUrl,
-      },
+      data: updateData,
     });
     res.status(200).json({ data: updatedProduct });
   } catch (error) {
@@ -92,6 +110,10 @@ export const updateProduct = async (req: Request, res: Response) => {
 // DELETE /api/products/:id
 export const deleteProduct = async (req: Request, res: Response) => {
   const { id } = req.params;
+
+  if (!id) {
+    return res.status(400).json({ message: 'Product ID is required in URL' });
+  }
 
   try {
     await prisma.product.delete({

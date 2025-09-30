@@ -2,6 +2,7 @@ import express from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
 import authRoutes from './modules/auth/auth.routes'
+import productRoutes from './modules/product/product.routes';
 
 // Load environment variables
 dotenv.config();
@@ -21,6 +22,7 @@ app.get('/', (req, res) => {
 
 // Auth Routes
 app.use('/api/auth', authRoutes);
+app.use('/api/products', productRoutes); 
 
 
 app.listen(PORT, () => {
