@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import authRoutes from './modules/auth/auth.routes'
 import productRoutes from './modules/product/product.routes';
+import cartRoutes from './modules/cart/cart.routes';
 
 // Load environment variables
 dotenv.config();
@@ -23,6 +24,7 @@ app.get('/', (req, res) => {
 // Auth Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/products', productRoutes); 
+app.use('/api/cart', cartRoutes);
 
 
 app.listen(PORT, () => {
